@@ -11,6 +11,13 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+@app.route('/Users/<id>')
+def get_user_packages(id):
+    conn = get_db_connection()
+    packages = conn.execute('SELECT * FROM Packages WHERE user_id = ?' (id,))
+    conn.close()
+    return render_template('Packages.html', packages=packages)
+    
 @app.route('/')
 def main():
     return render_template("Index.html")
@@ -20,7 +27,6 @@ def create():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-
         if not email:
             flash('email is required!')
         elif not password:
@@ -32,7 +38,9 @@ def create():
                          (email, password))
             conn.commit()
             conn.close()
+            '''id = conn.execute('SELECT id FROM Users WHERE email = ?', (email,))
+            conn.close() '''
+            #return redirect(url_for('get_user_packages', id=id))
             return redirect(url_for('main'))
-
 
     return render_template('SignUp.html')

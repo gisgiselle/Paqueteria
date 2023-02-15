@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Packages {% endblock %}</h1>
+    {% for packages in packages %}
+        <div class='package'>
+            <h2>{{ package['id'] }}</h2>
+            <p>{{ package['item'] }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
